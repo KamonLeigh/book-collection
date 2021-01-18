@@ -3,6 +3,7 @@ const expressMongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const ejs = require('ejs');
+const engine = require('ejs-mate');
 const path = require('path')
 const cookieParser = require('cookie-parser');
 const testRouter = require('./routers/health');
@@ -22,7 +23,7 @@ app.use(testRouter);
 app.use(books);
 app.use(wildCard);
 
-
+app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'views'));
 app.set(express.static(path.join(__dirname,'public')));
