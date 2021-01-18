@@ -2,9 +2,12 @@ const express = require('express');
 const expressMongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const ejs = require('ejs');
+const path = require('path')
 const cookieParser = require('cookie-parser');
 const testRouter = require('./routers/health');
 const wildCard = require('./routers/wildCard');
+const books = require('./routers/books')
 
 const app = express();
 
@@ -15,12 +18,21 @@ app.use(morgan('common'));
 app.use(helmet());
 app.use(cookieParser());
 
+app.use(testRouter);
+app.use(books);
+app.use(wildCard);
+
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname,'views'));
+app.set(express.static(path.join(__dirname,'public')));
+
 // prevents client sending script to run in db
 app.use(expressMongoSanitize());
 app.use(express.json());
 
-app.use(testRouter);
-app.use(wildCard);
+// set view engine to use ejs 
+
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
