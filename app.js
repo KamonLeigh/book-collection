@@ -12,6 +12,7 @@ const books = require('./routers/books')
 
 const app = express();
 
+require('./db/mongoose');
 // middleware logger for node.
 app.use(morgan('common'));
 
