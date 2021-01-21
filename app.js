@@ -20,6 +20,7 @@ app.use(morgan('common'));
 app.use(helmet());
 app.use(cookieParser());
 
+app.use(express.json());
 app.use(testRouter);
 app.use(books);
 app.use(wildCard);
