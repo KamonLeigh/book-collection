@@ -3,8 +3,11 @@ const Book = require('../db/models/book');
 
 const router = new express.Router();
 
-router.get('/books', (req, res) => {
-  res.render('index', { name: "Byron"});
+router.get('/books', async (req, res) => {
+    const books = await Book.find({})
+
+
+  res.render('index', { books });
 });
 
 router.post('/books', async( req, res) => {
