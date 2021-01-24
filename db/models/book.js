@@ -20,6 +20,10 @@ const bookSchema = new mongoose.Schema({
         default: false,
         required: false
     },
+    category: {
+        type: String,
+        required: false
+    }
 })
 
 

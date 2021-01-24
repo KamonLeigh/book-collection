@@ -20,8 +20,10 @@
     "express-session": "^1.17.1",
     "helmet": "^4.1.1",
     "mongodb": "^3.6.2",
-    "mongoose": "^5.11.12",
+    "mongoose": "^5.11.13",
     "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-local-mongoose": "^6.1.0",
     "validator": "^13.5.2",
     "xss-clean": "^0.1.1"
   },
