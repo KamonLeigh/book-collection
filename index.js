@@ -1,10 +1,11 @@
 const process = require('process');
+const { magenta } = require('chalk')
 const app = require('./app');
 const shutdown = require('./util/shutdown');
 
 const port = process.env.PORT || 3000;
 
-const server = app.listen(port, () => console.log(`Server is running on ${port}`));
+const server = app.listen(port, () => console.log(magenta(`Server is running on ${port}`)));
 
 const exitHandler = shutdown(server, {
   coredump: false,

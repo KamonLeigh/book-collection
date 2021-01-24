@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { yellow } = require('chalk')
 
 mongoose.connect(process.env.DBURL, {
     useCreateIndex: true,
@@ -6,4 +7,4 @@ mongoose.connect(process.env.DBURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     dbName:process.env.dbName
-}, () => {  console.log('connected to database')})
+}, () => {  console.log(yellow('connected to database'))})

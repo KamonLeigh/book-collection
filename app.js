@@ -21,20 +21,22 @@ app.use(helmet());
 app.use(cookieParser());
 
 app.use(express.json());
-app.use(testRouter);
-app.use(books);
-app.use(wildCard);
+;
 
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'views'));
-app.set(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname,'public')));
 
 // prevents client sending script to run in db
 app.use(expressMongoSanitize());
 app.use(express.json());
 
 // set view engine to use ejs 
+
+app.use(testRouter);
+app.use("/books", books);
+app.use(wildCard)
 
 
 // eslint-disable-next-line no-unused-vars

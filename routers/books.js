@@ -4,7 +4,7 @@ const { books, createBooks } = require("../controllers/books");
 
 const router = new express.Router();
 
-router.get('/books', asyncErrorHandler(books))
-      .post('/books', asyncErrorHandler(createBooks))
+router.get('/', asyncErrorHandler(books))
+      .post('/', asyncErrorHandler(createBooks))
 
 module.exports = router;
