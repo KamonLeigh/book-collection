@@ -1,4 +1,4 @@
-const mongoose = require('.mongoose');
+const mongoose = require('mongoose');
 const validator = require('validator');
 const passportLocalMongoose = require('passport-local-mongoose')
 

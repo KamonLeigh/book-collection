@@ -4,14 +4,15 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const session = require('express-session');
 const engine = require('ejs-mate');
-const path = require('path');
+const path = require('path');[]
 const passport = require('passport');
 const LocalStraegy = require('passport-local').Strategy
 const cookieParser = require('cookie-parser');
-const User = require('./db/models/user');
+
 const testRouter = require('./routers/health');
 const wildCard = require('./routers/wildCard');
-const books = require('./routers/books')
+const books = require('./routers/books');
+const users = require('./routers/users');
 
 const app = express();
 
@@ -45,7 +46,7 @@ app.use(session({
   // saveUninitialized: true,
   // cookie:{ secure: true}
 }))
-
+const User = require('./db/models/user');
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -59,6 +60,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(testRouter);
 app.use("/books", books);
+app.use('/register', users);
 app.use(wildCard)
 
 
