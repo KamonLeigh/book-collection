@@ -2,7 +2,7 @@ const express = require('express');
 const expressMongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const ejs = require('ejs');
+const session = require('express-session')
 const engine = require('ejs-mate');
 const path = require('path')
 const cookieParser = require('cookie-parser');
@@ -31,6 +31,15 @@ app.use(express.static(path.join(__dirname,'public')));
 // prevents client sending script to run in db
 app.use(expressMongoSanitize());
 app.use(express.json());
+
+// app.set('trust proxy', 1);
+
+app.use(session({
+  secret: process.env.sessionSECRET,
+  // resave: true,
+  // saveUninitialized: true,
+  // cookie:{ secure: true}
+}))
 
 // set view engine to use ejs 
 
