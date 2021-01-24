@@ -2,10 +2,13 @@ const express = require('express');
 const expressMongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const session = require('express-session')
+const session = require('express-session');
 const engine = require('ejs-mate');
-const path = require('path')
+const path = require('path');
+const passport = require('passport');
+const LocalStraegy = require('passport-local').Strategy
 const cookieParser = require('cookie-parser');
+const User = require('./db/models/user');
 const testRouter = require('./routers/health');
 const wildCard = require('./routers/wildCard');
 const books = require('./routers/books')
@@ -32,6 +35,8 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use(expressMongoSanitize());
 app.use(express.json());
 
+
+
 // app.set('trust proxy', 1);
 
 app.use(session({
@@ -40,6 +45,15 @@ app.use(session({
   // saveUninitialized: true,
   // cookie:{ secure: true}
 }))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStraegy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 // set view engine to use ejs 
 
