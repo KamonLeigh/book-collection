@@ -2,7 +2,7 @@ const Book = require("../db/models/book");
 
 module.exports.books = async (req, res) => {
     const books = await Book.find({})
-    res.render('index', { books });
+    res.render('index', { books, title: 'books' });
 }
 
 module.exports.createBooks = async (req, res) => {

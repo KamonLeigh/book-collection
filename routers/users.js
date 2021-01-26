@@ -1,9 +1,10 @@
 const express = require('express');
 const asyncErrorHandler = require('../util/asyncErrorHandler');
-const { register } = require('../controllers/users');
+const { register, registerUser } = require('../controllers/users');
 
 const router = new express.Router();
 
-router.get('/', register);
+router.get('/register', register)
+      .post('/register', registerUser)
 
 module.exports = router;

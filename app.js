@@ -4,7 +4,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const session = require('express-session');
 const engine = require('ejs-mate');
-const path = require('path');[]
+const path = require('path');
+const methodOverride = require('method-override')
 const passport = require('passport');
 const LocalStraegy = require('passport-local').Strategy
 const cookieParser = require('cookie-parser');
@@ -25,11 +26,14 @@ app.use(helmet());
 app.use(cookieParser());
 
 app.use(express.json());
-;
+
 
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'views'));
+ app.use(express.urlencoded({extended: true}))
+
+ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname,'public')));
 
 // prevents client sending script to run in db
@@ -42,9 +46,9 @@ app.use(express.json());
 
 app.use(session({
   secret: process.env.sessionSECRET,
-  // resave: true,
-  // saveUninitialized: true,
-  // cookie:{ secure: true}
+  resave: true,
+  saveUninitialized: true,
+  cookie:{ secure: true}
 }))
 const User = require('./db/models/user');
 app.use(passport.initialize());
@@ -60,7 +64,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(testRouter);
 app.use("/books", books);
-app.use('/register', users);
+app.use('/', users);
 app.use(wildCard)
 
 
