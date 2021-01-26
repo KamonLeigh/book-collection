@@ -9,6 +9,7 @@ const methodOverride = require('method-override')
 const passport = require('passport');
 const LocalStraegy = require('passport-local').Strategy
 const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 
 const testRouter = require('./routers/health');
 const wildCard = require('./routers/wildCard');
@@ -33,7 +34,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'views'));
  app.use(express.urlencoded({extended: true}))
 
- app.use(methodOverride('_method'));
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname,'public')));
 
 // prevents client sending script to run in db
@@ -50,6 +51,8 @@ app.use(session({
   saveUninitialized: true,
   cookie:{ secure: true}
 }))
+
+app.use(flash());
 const User = require('./db/models/user');
 app.use(passport.initialize());
 app.use(passport.session());
@@ -61,6 +64,14 @@ passport.deserializeUser(User.deserializeUser());
 
 
 // set view engine to use ejs 
+
+app.use((req, res, next) => {
+  
+  req.locals.success = req.flash('success');
+  req.locals.error = req.flash('error');
+  next()
+})
+
 
 app.use(testRouter);
 app.use("/books", books);
