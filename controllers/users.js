@@ -10,12 +10,22 @@ module.exports.registerUser = ( async (req, res) => {
     const {email, firstName, lastName, username, password } = req.body;
    
     const user = new User({email, firstName, lastName, username});
-    console.log(user);
+
     const registerUser = await User.register(user, password);
-    console.log(registerUser)
+    
+    req.flash('msg-success', 'registered!');
     res.redirect('/books')
-    } catch {
+    } catch(e) {
+        req.flash('error', e.message);
         res.redirect('/register')
     }
 
-})
+});
+
+module.exports.login = ((req, res) => {
+    res.render('users/login', { title: 'login'});
+}) 
+
+module.exports.loginUser = (( req, res ) => {
+    res.redirect('/register')
+});

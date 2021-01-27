@@ -23,7 +23,7 @@ require('./db/mongoose');
 app.use(morgan('common'));
 
 // set headers in node app by default client is unable to tell that a node/express is running.
-app.use(helmet());
+
 app.use(cookieParser());
 
 app.use(express.json());
@@ -49,10 +49,13 @@ app.use(session({
   secret: process.env.sessionSECRET,
   resave: true,
   saveUninitialized: true,
-  cookie:{ secure: true}
+  cookie:{ //secure: true
+  }
 }))
 
+app.use(helmet());
 app.use(flash());
+
 const User = require('./db/models/user');
 app.use(passport.initialize());
 app.use(passport.session());
@@ -66,9 +69,9 @@ passport.deserializeUser(User.deserializeUser());
 // set view engine to use ejs 
 
 app.use((req, res, next) => {
-  
-  req.locals.success = req.flash('success');
-  req.locals.error = req.flash('error');
+ 
+  res.locals.success = req.flash('msg-success');
+  res.locals.error = req.flash('error');
   next()
 })
 
