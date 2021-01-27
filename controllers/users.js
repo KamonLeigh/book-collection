@@ -27,5 +27,13 @@ module.exports.login = ((req, res) => {
 }) 
 
 module.exports.loginUser = (( req, res ) => {
-    res.redirect('/register')
+
+    req.flash('msg-success', 'welcome back :-)')
+    res.redirect('/books')
 });
+
+module.exports.logoutUser = ((req, res) => {
+    req.logout();
+    req.flash('msg-success', 'You have been signed out!');
+    res.redirect('/login');
+})
