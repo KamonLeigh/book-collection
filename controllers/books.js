@@ -6,7 +6,12 @@ module.exports.books = async (req, res) => {
 }
 
 module.exports.createBooks = async (req, res) => {
-    const book = new Book(req.body);
+    const book = new Book(req.body.book);
     await book.save();
-    res.status(201).send(book);
+    req.flash('msg-success', 'new book created :-)');
+    res.redirect('/books');
+}
+
+module.exports.bookForm = (req, res) => {
+    res.render('books/new', { title: 'create new book'})
 }

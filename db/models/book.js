@@ -23,6 +23,10 @@ const bookSchema = new mongoose.Schema({
     category: {
         type: String,
         required: false
+    },
+    author: {
+        type: String,
+        required: true,
     }
 })
 
