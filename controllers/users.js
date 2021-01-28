@@ -1,6 +1,6 @@
 const User = require("../db/models/user");
 
-module.exports.register = ((req, res) => {
+module.exports.register = ((req, res, next) => {
     res.render('users/register', {title: 'Register'})
 })
 
@@ -12,9 +12,15 @@ module.exports.registerUser = ( async (req, res) => {
     const user = new User({email, firstName, lastName, username});
 
     const registerUser = await User.register(user, password);
+
+    req.login(registerUser, err => {
+        if(err) { return next(err)}
+        
+        req.flash('msg-success', 'registered!');
+        res.redirect('/books')
+
+    })
     
-    req.flash('msg-success', 'registered!');
-    res.redirect('/books')
     } catch(e) {
         req.flash('error', e.message);
         res.redirect('/register')
