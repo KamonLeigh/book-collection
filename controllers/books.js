@@ -6,7 +6,9 @@ module.exports.books = async (req, res) => {
 }
 
 module.exports.createBooks = async (req, res) => {
-    const book = new Book(req.body.book);
+    const newBook = req.body.book
+    newBook.owner = req.user._id
+    const book = new Book(newBook);
     await book.save();
     req.flash('msg-success', 'new book created :-)');
     res.redirect('/books');
