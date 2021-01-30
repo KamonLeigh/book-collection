@@ -1,4 +1,4 @@
-const { sortArr } = require('./functions')
+const { sort } = require('./functions')
 
 
 const category = [
@@ -17,4 +17,4 @@ const category = [
 
 
 
-module.exports = sortArr(category);
+module.exports = sort(category);

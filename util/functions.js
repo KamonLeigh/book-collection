@@ -1,3 +1,8 @@
 module.exports.sortArr = (arr) => {
-    return arr.sort((a,b) => a - b);
+ const result = arr.sort((a,b) => a - b);
+ return result
+}
+
+module.exports.sort = (arr) => {
+    return arr.sort();
 }
