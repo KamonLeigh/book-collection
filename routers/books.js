@@ -10,6 +10,6 @@ router.get('/',isLoggedIn, asyncErrorHandler(books))
 
 router.get('/new', isLoggedIn, bookForm);
 
-router.get(':id', isLoggedIn, isAuthor, asyncErrorHandler(getBook));
+router.get('/:id', isLoggedIn, isAuthor, asyncErrorHandler(getBook));
 
 module.exports = router;

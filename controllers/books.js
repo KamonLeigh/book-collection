@@ -20,18 +20,17 @@ module.exports.bookForm = (req, res) => {
 }
 
 module.exports.getBook  = async (req, res) => {
-    const { id } = req.parms;
+    const { id } = req.params;
 
-    const book = await Book
-                        .findById(id)
-                        .populate('owner')
-                        .execPopulate();
+    const book = await Book.findById(id)
+                         
     if (!book) {
         req.flash('error', 'unable to carry out request');
         return res.redirect('/books');
     }
+    console.log(book)
 
-    res.render('books/book', { book });
+    res.render('books/book', { book, title: 'book' });
 
 
 }
