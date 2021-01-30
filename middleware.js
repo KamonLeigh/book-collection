@@ -17,7 +17,7 @@ module.exports.isAuthor = async (req, res, next) => {
 
     if (!book.owner.equals(userId)) {
         req.flash('error', 'you do not have permission to do this :-(');
-        return res.redirect(`/login`);
+        return res.redirect(`/books`);
     }
      next();
 };
