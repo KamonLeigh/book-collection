@@ -35,3 +35,15 @@ module.exports.getBook  = async (req, res) => {
 
 
 }
+
+module.exports.editBookPage = async (req, res) => {
+    const { id } = req.params;
+    const book = await Book.findById(id);
+                          
+    if (!book) {
+        req.flash('error', 'unable to carry out request');
+        return res.redirect('/books');
+    }
+    
+    res.render('books/edit', { book, title: 'edit book'})
+}
