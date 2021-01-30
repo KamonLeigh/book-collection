@@ -1,4 +1,5 @@
 const Book = require("../db/models/book");
+const category = require('../util/category');
 
 module.exports.books = async (req, res) => {
     const books = await Book.find({})
@@ -15,5 +16,5 @@ module.exports.createBooks = async (req, res) => {
 }
 
 module.exports.bookForm = (req, res) => {
-    res.render('books/new', { title: 'create new book'})
+    res.render('books/new', { title: 'create new book', categories: category})
 }

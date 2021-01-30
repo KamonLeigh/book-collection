@@ -13,7 +13,11 @@
 
 
     <label for="description">category</label>
-    <input type="text" id="category"  name="book[category]" required>
+    <select id="category"  name="book[category]" required>
+        <% for(const category of categories) {%>
+            <option value="<%=category%>"><%= category %></option>
+        <% } %>
+    </select>
     <button type="submit">submit</button>  
 </form>
 
