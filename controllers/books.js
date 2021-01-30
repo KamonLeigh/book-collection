@@ -22,7 +22,8 @@ module.exports.bookForm = (req, res) => {
 module.exports.getBook  = async (req, res) => {
     const { id } = req.params;
 
-    const book = await Book.findById(id)
+    const book = await Book.findById(id);
+    await book.populate('owner').execPopulate();
                          
     if (!book) {
         req.flash('error', 'unable to carry out request');
