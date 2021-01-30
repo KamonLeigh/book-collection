@@ -3,7 +3,7 @@ const category = require('../util/category');
 
 module.exports.books = async (req, res) => {
     const books = await Book.find({})
-    res.render('index', { books, title: 'books' });
+    res.render('books/list', { books, title: 'books' });
 }
 
 module.exports.createBooks = async (req, res) => {
