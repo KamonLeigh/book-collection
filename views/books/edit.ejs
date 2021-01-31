@@ -1,2 +1,23 @@
-<h1><%= book.title %></h1>
+<h1> edit: <%= book.title %></h1>
 <a target="_self" href="/books">go back to books</a>
+
+<form method="POST" action="/books/<%=book._id%>?_method=PUT">
+    <label for="title">title</label>
+    <input type="text" id="author"  name="book[title]"  value="<%=book.title%>"required>
+    <label for="author">author</label>
+    <input type="text" id="author"  name="book[author]" value= "<%=book.author%>" required>
+
+    <label for="description">description</label>
+    <textarea id="description"  name="book[description]"  required>
+        <%=book.description%>
+    </textarea>
+
+
+    <label for="description">category</label>
+    <select id="category"  name="book[category]" value="<%=book.category%>" required>
+        <% for(const category of categories) {%>
+            <option value="<%=category%>"><%= category %></option>
+        <% } %>
+    </select>
+    <button type="submit">submit</button>  
+</form>

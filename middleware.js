@@ -10,6 +10,7 @@ module.exports.isLoggedIn = ((req, res, next) => {
 });
 
 module.exports.isAuthor = async (req, res, next) => {
+    console.log('running')
     const { id } = req.params;
     const userId = req.user._id;
 
