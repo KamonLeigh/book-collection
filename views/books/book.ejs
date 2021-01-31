@@ -4,4 +4,10 @@
 <p><%= book.owner.username %></p>
 
 <a target="_self" href="/books/edit/<%=book._id%>">edit book</a>
+
+<form method="POST" action="/books/delete/<%=book._id%>?_method=DELETE">
+    <button>delete book</button>
+</form>
+
+
 <a target="_self" href="/books">go back to books</a>

@@ -63,5 +63,5 @@ module.exports.deleteBook = async (req, res) => {
     await Book.findByIdAndDelete(id);
 
     req.flash('msg-success', 'book has been successfully deleted');
-    res.redirct('/books');
+    res.redirect('/books');
 }
