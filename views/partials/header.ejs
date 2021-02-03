@@ -1,1 +1,18 @@
-<p>This is the header</p>
+<p>
+    <% if (user) { %>
+        <p>
+            <a target="_self" href="/books">books</a>
+        </p>
+    <% } %>
+    <% if (!user) {%>
+        <p>
+            <a target="_self" href="/login"> login</a>
+            <a target="_self" href="/register"> register</a>
+        </p>
+    <% } %>
+    <% if (user) { %>
+        <p>
+            <a target="_self" href="/logout"> logout</a>
+        </p>
+    <% } %>
+</p>
