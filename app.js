@@ -15,6 +15,7 @@ const testRouter = require('./routers/health');
 const wildCard = require('./routers/wildCard');
 const books = require('./routers/books');
 const users = require('./routers/users');
+const home = require('./routers/home');
 
 const app = express();
 
@@ -78,6 +79,7 @@ app.use((req, res, next) => {
 
 
 app.use(testRouter);
+app.use('/', home)
 app.use("/books", books);
 app.use('/', users);
 app.use(wildCard)
