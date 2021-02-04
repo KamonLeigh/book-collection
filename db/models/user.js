@@ -27,7 +27,6 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-userSchema.plugin(passportLocalMongoose);
 userSchema.virtual('books', {
     ref: 'Book',
     localField: '_id',
@@ -39,6 +38,7 @@ userSchema.virtual('stores', {
     localField: '_id',
     foreignField: 'owner'
 })
+userSchema.plugin(passportLocalMongoose);
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

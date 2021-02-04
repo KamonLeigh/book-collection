@@ -2,7 +2,8 @@ const Book = require("../db/models/book");
 const category = require('../util/category');
 
 module.exports.books = async (req, res) => {
-    const books = await Book.find({})
+    const userId = req.user._id;
+    const books = await Book.find({ owner : userId})
     res.render('books/list', { books, title: 'books' });
 }
 

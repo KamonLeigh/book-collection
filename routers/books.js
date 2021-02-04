@@ -5,7 +5,7 @@ const { isLoggedIn, isAuthor } = require('../middleware');
 
 const router = new express.Router();
 
-router.get('/',isLoggedIn, asyncErrorHandler(books))
+router.get('/',isLoggedIn,asyncErrorHandler(books))
       .post('/', asyncErrorHandler(createBooks))
 
 router.get('/new', isLoggedIn, bookForm);
