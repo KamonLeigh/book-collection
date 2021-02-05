@@ -16,7 +16,7 @@ module.exports.registerUser = ( async (req, res) => {
     req.login(registerUser, err => {
         if(err) { return next(err)}
         
-        req.flash('msg-success', 'registered!');
+        req.flash('msg-success', 'you have logged in');
         res.redirect('/books')
 
     })

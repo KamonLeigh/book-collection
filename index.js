@@ -4,7 +4,7 @@ const app = require('./app');
 const shutdown = require('./util/shutdown');
 
 const port = process.env.PORT || 3000;
-
+console.log
 const server = app.listen(port, () => console.log(magenta(`Server is running on ${port}`)));
 
 const exitHandler = shutdown(server, {

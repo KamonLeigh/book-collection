@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { yellow } = require('chalk')
 
+
+
 mongoose.connect(process.env.DBURL, {
     useCreateIndex: true,
     useFindAndModify: false,

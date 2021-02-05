@@ -1,5 +1,5 @@
 const Book = require('./db/models/book');
-const Books = require('./db/models/book');
+const Store = require('./db/models/store');
 
 module.exports.isLoggedIn = ((req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -16,9 +16,23 @@ module.exports.isAuthor = async (req, res, next) => {
 
     const book = await Book.findById(id).exec();
 
-    if (!book.owner._id.equals(userId)) {
+    if (!book.owner.equals(userId)) {
         req.flash('error', 'you do not have permission to do this :-(');
         return res.redirect(`/books`);
     }
      next();
 };
+
+module.exports.isStoreAuthor = async (req, res, next) => {
+    const { id } = req.parms;
+    const userId = req.user._id;
+
+    const store = await Store.findById(id).exec();
+
+    if (!store.owner.equals(userId)) {
+        req.flash('error', 'you do not have permission to view this :-( ');
+        return res.redirect('/store');
+    }
+
+    next();
+}
