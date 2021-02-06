@@ -32,6 +32,10 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
+    },
+    image: {
+        url: String,
+        public_id: String
     }
 })
 
