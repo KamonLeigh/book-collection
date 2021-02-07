@@ -44,7 +44,8 @@ module.exports.logoutUser = ((req, res) => {
     res.redirect('/login');
 })
 
-module.exports.user = (req, res) => {
-
-    res.render('users/me', { title: 'profie'})
-}
+module.exports.user =  async (req, res) => {
+    const userId = req.user._id;
+    const user = await User.findById(userId).exec();
+    res.render('users/me', {title: 'profile', user})
+} 

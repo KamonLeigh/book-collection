@@ -1,1 +1,11 @@
-<h1>This is the user</h1>
+<% layout('/layouts/boilerplate') %>
+
+<h1>Profile</h1>
+<article>
+    <h2><%= user.username %></h2>
+    <p><%= user.firstName %> <%= user.lastName %></p>
+    <p>email: <%= user.email %></p>
+</article>
+
+
+ 
