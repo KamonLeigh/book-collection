@@ -43,3 +43,8 @@ module.exports.logoutUser = ((req, res) => {
     req.flash('msg-success', 'You have been signed out!');
     res.redirect('/login');
 })
+
+module.exports.user = (req, res) => {
+
+    res.render('users/me', { title: 'profie'})
+}
