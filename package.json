@@ -1,7 +1,7 @@
 {
   "name": "mongo-starter",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is wep app that stores books of interest",
   "main": "index.js",
   "scripts": {
     "dev": " env-cmd -f ./config/dev.env nodemon index.js",
