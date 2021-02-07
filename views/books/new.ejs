@@ -1,7 +1,7 @@
 <% layout('/layouts/boilerplate') %>
 <h1>add book</h1>
 
-<form method="POST" action="/books">
+<form method="POST" action="/books" enctype="multipart/form-data>
     <label for="title">title</label>
     <input type="text" id="author"  name="book[title]" required>
     <label for="author">author</label>
