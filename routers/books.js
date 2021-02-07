@@ -10,9 +10,9 @@ const upload = multer({ storage })
 const router = new express.Router();
 
 router.get('/',isLoggedIn,asyncErrorHandler(books))
-      .post('/', asyncErrorHandler(createBooks))
+      .post('/',isLoggedIn, upload.single('image'), asyncErrorHandler(createBooks))
 
-router.get('/new', isLoggedIn, upload.single('image'), bookForm);
+router.get('/new', isLoggedIn, bookForm);
 router.get('/edit/:id', isLoggedIn, isAuthor, asyncErrorHandler(editBookPage))
 
 

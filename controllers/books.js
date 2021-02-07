@@ -9,7 +9,17 @@ module.exports.books = async (req, res) => {
 
 module.exports.createBooks = async (req, res) => {
     const newBook = req.body.book
+  
     newBook.owner = req.user._id
+
+    
+    const image = {
+        url: req.file.path,
+        public_id: req.file.filename
+    }
+
+    newBook.image = image;
+
     const book = new Book(newBook);
     await book.save();
     req.flash('msg-success', 'new book created :-)');

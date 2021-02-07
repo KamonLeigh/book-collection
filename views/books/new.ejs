@@ -1,7 +1,7 @@
 <% layout('/layouts/boilerplate') %>
 <h1>add book</h1>
 
-<form method="POST" action="/books" enctype="multipart/form-data>
+<form method="POST" action="/books" enctype="multipart/form-data">
     <label for="title">title</label>
     <input type="text" id="author"  name="book[title]" required>
     <label for="author">author</label>
@@ -12,7 +12,7 @@
     </textarea>
 
     <label for="image">image</label>
-    <input type="file" name="book[image]" id="image">
+    <input type="file" name="image" id="image" accept="image/*">
     <label for="description">category</label>
     <select id="category"  name="book[category]" required>
         <% for(const category of categories) {%>

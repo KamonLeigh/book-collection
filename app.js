@@ -89,6 +89,7 @@ app.use(wildCard)
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
+  console.log(err)
   const { message = 'oops something is really, really wrong!!', statusCode = 500 } = err;
   res.status(statusCode).send(message);
 });
