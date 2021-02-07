@@ -11,7 +11,8 @@
     <textarea type="text" id="description"  name="book[description]" required>
     </textarea>
 
-
+    <label for="image">image</label>
+    <input type="file" name="book[image]" id="image">
     <label for="description">category</label>
     <select id="category"  name="book[category]" required>
         <% for(const category of categories) {%>
