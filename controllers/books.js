@@ -61,8 +61,21 @@ module.exports.editBookPage = async (req, res) => {
 
 module.exports.editBook = async  (req, res) => {
     const { id } = req.params;
-    console.log(req.body.book);
-    const book = await Book.findByIdAndUpdate( id, { ...req.body.book });
+    const editedBook = req.body.book;
+    console.log(req.body)
+
+    if (req.files) {
+        const image = {
+            url: req.file.path,
+            public_id: req.file.filename
+        }
+    
+        editedBook.image = image;
+
+    }
+    
+    const book = await Book.findByIdAndUpdate( id, { ...editedBook});
+    console.log(book)
     await book.save();
 
     req.flash('msg-success', 'book has been updated!');

@@ -17,7 +17,7 @@ router.get('/edit/:id', isLoggedIn, isAuthor, asyncErrorHandler(editBookPage))
 
 
 router.get('/:id', isLoggedIn, isAuthor, asyncErrorHandler(getBook))
-      .put('/:id', isLoggedIn, isAuthor, asyncErrorHandler(editBook))
+      .put('/:id', isLoggedIn, isAuthor, upload.single('image'), asyncErrorHandler(editBook))
 
 router.delete('/delete/:id', isLoggedIn, isAuthor, asyncErrorHandler(deleteBook))
 

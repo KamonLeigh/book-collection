@@ -1,7 +1,7 @@
 <h1> edit: <%= book.title %></h1>
 <a target="_self" href="/books">go back to books</a>
 
-<form method="POST" action="/books/<%=book._id%>?_method=PUT">
+<form method="POST" action="/books/<%=book._id%>?_method=PUT" enctype="multipart/form-data">
     <label for="title">title</label>
     <input type="text" id="author"  name="book[title]"  value="<%=book.title%>"required>
     <label for="author">author</label>
@@ -9,10 +9,10 @@
 
     <label for="description">description</label>
     <textarea id="description"  name="book[description]"  required>
-        <%=book.description%>
+        <%=book.description %>
     </textarea>
-
-
+    <label for="image">image</label>
+    <input type="file" name="image" id="image" accept="image/*">
     <label for="description">category</label>
     <select id="category"  name="book[category]" value="<%=book.category%>" required>
         <% for(const category of categories) {%>
