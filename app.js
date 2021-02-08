@@ -55,7 +55,7 @@ app.use(session({
   }
 }))
 
-app.use(helmet());
+// app.use(helmet());
 app.use(flash());
 
 const User = require('./db/models/user');

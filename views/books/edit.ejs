@@ -13,6 +13,11 @@
     </textarea>
     <label for="image">image</label>
     <input type="file" name="image" id="image" accept="image/*">
+    <% if(book.image.url) { %>
+        <label for="currentImage"> current image</label>
+        <input id type="checkbox" name="book[currentImage]"value="<%=book.image.public_id%>">
+        <image src="<%=book.image.url%>" alt="<%=book.title%>"/>
+    <% } %>
     <label for="description">category</label>
     <select id="category"  name="book[category]" value="<%=book.category%>" required>
         <% for(const category of categories) {%>

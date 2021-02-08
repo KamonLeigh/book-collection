@@ -12,13 +12,14 @@ module.exports.createBooks = async (req, res) => {
   
     newBook.owner = req.user._id
 
-    
-    const image = {
-        url: req.file.path,
-        public_id: req.file.filename
+    if (req.files) {
+        const image = {
+            url: req.file.path,
+            public_id: req.file.filename
+        }
+   
+            newBook.image = image;
     }
-
-    newBook.image = image;
 
     const book = new Book(newBook);
     await book.save();
