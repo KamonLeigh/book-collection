@@ -1,5 +1,6 @@
 const Book = require("../db/models/book");
 const category = require('../util/category');
+const { cloudinary }= require('../cloudinary')
 
 module.exports.books = async (req, res) => {
     const userId = req.user._id;
@@ -63,9 +64,8 @@ module.exports.editBookPage = async (req, res) => {
 module.exports.editBook = async  (req, res) => {
     const { id } = req.params;
     const editedBook = req.body.book;
-    console.log(req.body)
 
-    if (req.files) {
+    if (req.file) {
         const image = {
             url: req.file.path,
             public_id: req.file.filename
@@ -74,10 +74,29 @@ module.exports.editBook = async  (req, res) => {
         editedBook.image = image;
 
     }
+   
+
+
     
     const book = await Book.findByIdAndUpdate( id, { ...editedBook});
     console.log(book)
     await book.save();
+   
+    if (req.body.currentImage) {
+        console.log(req.body.currentImage)
+        await cloudinary.uploader.destroy(req.body.currentImage);
+
+        const image = {
+            url: '',
+            public_id: ''
+        }
+
+       await book.updateOne({ image });
+
+    }
+
+
+   
 
     req.flash('msg-success', 'book has been updated!');
     res.redirect(`/books/${book._id}`);
