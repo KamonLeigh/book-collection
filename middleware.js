@@ -1,5 +1,8 @@
 const Book = require('./db/models/book');
 const Store = require('./db/models/store');
+const { bookSchema } =require('./schemas');
+ const ExpressError = require('./util/ExpressError');
+
 
 module.exports.isLoggedIn = ((req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -32,6 +35,17 @@ module.exports.isStoreAuthor = async (req, res, next) => {
     if (!store.owner.equals(userId)) {
         req.flash('error', 'you do not have permission to view this :-( ');
         return res.redirect('/store');
+    }
+
+    next();
+}
+
+module.exporsts.validateBook = (req, res, next) => {
+    const { error } = bookSchema.validate(req.body);
+
+    if (error) {
+        const msg = error.details.map(e => e.message).join(',');
+        throw ExpressError(msg, 400);
     }
 
     next();
