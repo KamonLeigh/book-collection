@@ -40,7 +40,7 @@ module.exports.isStoreAuthor = async (req, res, next) => {
     next();
 }
 
-module.exporsts.validateBook = (req, res, next) => {
+module.exports.validateBook = (req, res, next) => {
     const { error } = bookSchema.validate(req.body);
 
     if (error) {
