@@ -1,7 +1,7 @@
 const express = require('express');
 const asyncErrorHandler = require("../util/asyncErrorHandler");
 const { books, createBooks, bookForm, getBook, editBookPage, editBook, deleteBook  } = require("../controllers/books");
-const { isLoggedIn, isAuthor } = require('../middleware');
+const { isLoggedIn, isAuthor, validateBook } = require('../middleware');
 const {storage, cloudinary} = require('../cloudinary');
 const multer = require('multer');
 
@@ -10,7 +10,7 @@ const upload = multer({ storage })
 const router = new express.Router();
 
 router.get('/',isLoggedIn,asyncErrorHandler(books))
-      .post('/',isLoggedIn, upload.single('image'), asyncErrorHandler(createBooks))
+      .post('/',isLoggedIn, upload.single('image'),validateBook ,asyncErrorHandler(createBooks))
 
 router.get('/new', isLoggedIn, bookForm);
 router.get('/edit/:id', isLoggedIn, isAuthor, asyncErrorHandler(editBookPage))

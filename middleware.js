@@ -45,7 +45,7 @@ module.exports.validateBook = (req, res, next) => {
 
     if (error) {
         const msg = error.details.map(e => e.message).join(',');
-        throw ExpressError(msg, 400);
+        throw new ExpressError(msg, 400);
     }
 
     next();
