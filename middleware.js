@@ -1,6 +1,6 @@
 const Book = require('./db/models/book');
 const Store = require('./db/models/store');
-const { bookSchema } =require('./schemas');
+const { bookSchema, userSchema } =require('./schemas');
  const ExpressError = require('./util/ExpressError');
 
 
@@ -49,4 +49,13 @@ module.exports.validateBook = (req, res, next) => {
     }
 
     next();
+}
+
+module.exports.validateUser = (req, res, next) => {
+   const { error }  = userSchema.validate(req.body);
+
+   if (error) {
+       const msg = error.details.map(e => e.message).join(',');
+       throw new ExpressError(msg, 400);
+   }
 }

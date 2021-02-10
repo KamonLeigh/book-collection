@@ -13,3 +13,11 @@ module.exports.bookSchema = Joi.object({
     }).required(),
     image: Joi.string()
 }) 
+
+module.exports.userSchema = Joi.object({
+    firstName: Joi.string().min(2).max(255).required(),
+    lastName: Joi.string().min(2).max(255).required(),
+    email: Joi.string().min(5).max(255).email().required(),
+    password: Joi.string().min(4).max(255).required(),
+    username: Joi.string().min(2).max(255).required(),
+})
