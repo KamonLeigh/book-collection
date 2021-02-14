@@ -7,7 +7,7 @@ const { isLoggedIn, validateUser } = require('../middleware')
 const router = new express.Router();
 
 router.get('/register', register)
-      .post('/register',registerUser)
+      .post('/register', validateUser,registerUser)
       .get('/login', login)
       .post('/login',passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}) ,loginUser)
       .get('/logout', logoutUser)
