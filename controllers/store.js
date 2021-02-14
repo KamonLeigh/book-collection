@@ -6,3 +6,7 @@ module.exports.stores = async (req, res ) => {
 
     res.render('stores/list', {title: 'Store list'})
 }
+
+module.exports.createStores = async (req, res) => {
+    res.render('stores/new', { title: 'New Store'});
+}

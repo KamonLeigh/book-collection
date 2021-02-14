@@ -1,0 +1,8 @@
+<% layout('/layouts/boilerplate') %>
+<h2>add new store</h2>
+
+<form method="POST" action="/stores">
+    <label for="name">store</label>
+    <input type="text" id="name" name="store[name]"/>
+    <button type="submit">add store</button>  
+</form>
