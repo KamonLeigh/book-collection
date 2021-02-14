@@ -58,4 +58,5 @@ module.exports.validateUser = (req, res, next) => {
        const msg = error.details.map(e => e.message).join(',');
        throw new ExpressError(msg, 400);
    }
+   next();
 }
