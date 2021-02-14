@@ -1,10 +1,13 @@
+const { send } = require("@sendgrid/mail");
 const User = require("../db/models/user");
+const { sendWelcomeMessage } = require('../email/account')
 
 module.exports.register = ((req, res, next) => {
     res.render('users/register', {title: 'Register'})
 })
 
-module.exports.registerUser = ( async (req, res) => {
+module.exports.registerUser =  async (req, res) => {
+   
 
     try { 
     const {email, firstName, lastName, username, password } = req.body;
@@ -13,20 +16,20 @@ module.exports.registerUser = ( async (req, res) => {
 
     const registerUser = await User.register(user, password);
 
+   await sendWelcomeMessage(user.email, user.username);
     req.login(registerUser, err => {
         if(err) { return next(err)}
         
         req.flash('msg-success', 'you have logged in');
-        res.redirect('/books')
+        res.redirect('/books');
 
-    })
-    
+     })
     } catch(e) {
         req.flash('error', e.message);
-        res.redirect('/register')
+        res.redirect('/register');
     }
 
-});
+};
 
 module.exports.login = ((req, res) => {
     res.render('users/login', { title: 'login'});
