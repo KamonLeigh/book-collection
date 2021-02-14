@@ -16,3 +16,13 @@ module.exports.sendWelcomeMessage = async (email, username) => {
     await sgMail.send(msg);
 }
 
+module.exports.cancelAccountEmail = async (email, username) => {
+    const msg = {
+        to: email,
+        from: 'byronleigh80@gmail.com',
+        subject: 'Sad to see you go!',
+        html: ` <p>Good bye ${username} :-(. Please provide feedback regarding your experience.</p>`
+    }
+
+    await sgMail.send(msg);
+}
