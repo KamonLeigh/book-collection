@@ -15,6 +15,10 @@ const storeSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
+    notes: {
+        type: String,
+        required: false,
+    }
 
 
 })
