@@ -6,9 +6,16 @@ const storeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    location: {
-        type: Array,
-        required: true
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
