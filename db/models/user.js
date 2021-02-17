@@ -36,7 +36,7 @@ userSchema.virtual('books', {
 userSchema.virtual('stores', {
     ref: 'Store',
     localField: '_id',
-    foreignField: 'owner'
+    foreignField: 'author'
 })
 userSchema.plugin(passportLocalMongoose);
 

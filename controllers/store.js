@@ -9,6 +9,23 @@ module.exports.stores = async (req, res ) => {
     res.render('stores/', {title: 'Store list'})
 }
 
-module.exports.createStores = async (req, res) => {
+module.exports.showStores = async (req, res) => {
     res.render('stores/new', { title: 'New Store'});
+}
+
+moduke.exports.createStore = async(req, res) => {
+    const geoData = await geoboxingService.forwardGeocode({
+        query = req.body.store.location,
+        limit = 1
+    })
+
+    const store = new Store(req.body.store);
+    store.geometry = geoData.body.features[0].geometry;
+    store.author = req.user._id;
+    await store.save();
+
+    req.flash('msg-success', 'You have successfully added to your book store collection :-)');
+    res.direct('/stores')
+
+
 }

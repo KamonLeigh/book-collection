@@ -17,7 +17,7 @@ const storeSchema = new mongoose.Schema({
             required: true
         }
     },
-    owner: {
+    author: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
