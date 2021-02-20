@@ -5,8 +5,8 @@ const Store = require('../db/models/store');
 const geoboxingService = mbxGeoboxing({ accessToken: process.env.MAP_TOKEN})
 
 module.exports.stores = async (req, res ) => {
-  const owner = req.user._id;
-  const stores = await Store.find({ owner });
+  const author = req.user._id;
+  const stores = await Store.find({ author });
 
   return res.render('stores/', { title: 'Store list', stores });
 };
@@ -27,12 +27,18 @@ module.exports.createStore = async (req, res) => {
   await store.save();
 
   req.flash('msg-success', 'You have successfully added to your book store collection :-)');
-  return res.redirect('/books');
+  return res.redirect('/stores');
 };
 
 module.exports.getStore = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
 
-  return res.render('stores/store');
+  const store = await Store.findById(id).exec();
+
+  if (!store) {
+    req.flash('error', 'unable to carry out request');
+    return res.redirect('/stores');
+  }
+
+  return res.render('stores/store', { title: 'Store', store });
 };

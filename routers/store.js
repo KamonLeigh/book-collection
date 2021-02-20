@@ -4,7 +4,7 @@ const {
 } = require('../controllers/store');
 const asyncErrorHandler = require('../util/asyncErrorHandler');
 
-const { isLoggedIn } = require('../middleware');
+const { isLoggedIn, isStoreAuthor } = require('../middleware');
 
 const router = new express.Router();
 
@@ -13,5 +13,5 @@ router.get('/', isLoggedIn, asyncErrorHandler(stores))
 
 router.get('/new', isLoggedIn, showStores);
 
-router.get('/:id', isLoggedIn, asyncErrorHandler(getStore));
+router.get('/:id', isLoggedIn, isStoreAuthor, asyncErrorHandler(getStore));
 module.exports = router;

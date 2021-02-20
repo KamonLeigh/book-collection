@@ -1,6 +1,22 @@
 <% layout('/layouts/boilerplate') %>
 <div id="map"></div>
 
+
+<% if(stores.length) { %>
+<section> 
+    <% stores.forEach(store => { %>
+        <article>
+            <%= store.name %>
+            <a target="_self" href="/stores/<%=store.id%>">more info</a>
+        </article>
+    <% }) %>
+
+</section>
+<% } else { %>
+
+    <p>no stores</p>
+<% } %>
+
 <script>
     const mapToken = '<%-process.env.MAP_TOKEN%>';
 </script>
