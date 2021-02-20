@@ -1,1 +1,12 @@
 <% layout('/layouts/boilerplate') %>
+<article>
+    <div id="map"></div>
+    <h2><%= store.name %></h2>
+    <p><%= store.notes %></p>
+</article>
+
+<script>
+    const mapToken = '<%-process.env.MAP_TOKEN%>';
+    const store = <%- JSON.stringify(store) %>
+</script>
+<script src="/js/singleStoreMap.js"></script>
