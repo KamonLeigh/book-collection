@@ -29,3 +29,10 @@ module.exports.createStore = async (req, res) => {
   req.flash('msg-success', 'You have successfully added to your book store collection :-)');
   return res.redirect('/books');
 };
+
+module.exports.getStore = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+
+  return res.render('stores/store');
+};
