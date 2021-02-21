@@ -2,9 +2,9 @@
 const mbxGeoboxing = require('@mapbox/mapbox-sdk/services/geocoding');
 const Store = require('../db/models/store');
 
-const geoboxingService = mbxGeoboxing({ accessToken: process.env.MAP_TOKEN})
+const geoboxingService = mbxGeoboxing({ accessToken: process.env.MAP_TOKEN });
 
-module.exports.stores = async (req, res ) => {
+module.exports.stores = async (req, res) => {
   const author = req.user._id;
   const stores = await Store.find({ author });
 
@@ -54,4 +54,22 @@ module.exports.editStorePage = async (req, res) => {
   }
 
   return res.render('stores/edit', { title: 'edit store', store });
+};
+
+module.exports.editStore = async (req, res) => {
+  const { id } = req.params;
+  const editedStore = req.body.store;
+
+  const geoData = await geoboxingService.forwardGeocode({
+    query: editedStore.location,
+    limit: 1,
+  }).send();
+
+  editedStore.geometry = geoData.body.features[0].geometry;
+
+  const store = await Store.findByIdAndUpdate(id, { ...editedStore });
+  await store.save();
+
+  req.flash('msg-success', 'You have successfully updated your book store');
+  return res.redirect(`/stores/${id}`);
 };
