@@ -25,6 +25,9 @@ const storeSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  location: {
+    type: String,
+  },
 
 });
 

@@ -1,0 +1,13 @@
+<% layout('/layouts/boilerplate') %>
+<h2>edit store</h2>
+
+<form method="POST" action="/stores/<%=store._id%>?_method=PUT">
+    <label for="name">store</label>
+    <input type="text" id="name" name="store[name]" value="<%=store.name %>" />
+    <label for="location">location</label>
+    <input type="text" id="location" name="store[location]" value="<%=store.location%>"/>
+    <labe for="note"l>Notes</label>
+    <textarea type="text" id="note"  name="store[notes]" value="<%=store.notess%>">
+    </textarea>
+    <button type="submit">add store</button>  
+</form>

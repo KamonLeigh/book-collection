@@ -12,7 +12,9 @@ const marker = new mapboxgl.Marker()
   .setPopup(
     new mapboxgl.Popup({ offset: 25 })
       .setHTML(
-        `<h3>${store.name}</h3>`,
+        `<h3>${store.name}</h3>
+         <p>${store.location}</p>
+        `,
       ),
   )
   .addTo(map);

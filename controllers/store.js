@@ -42,3 +42,16 @@ module.exports.getStore = async (req, res) => {
 
   return res.render('stores/store', { title: 'Store', store });
 };
+
+module.exports.editStorePage = async (req, res) => {
+  const { id } = req.params;
+
+  const store = await Store.findById(id);
+
+  if (!store) {
+    req.flash('error', 'unable to carry out request');
+    return res.redirect('/stores');
+  }
+
+  return res.render('stores/edit', { title: 'edit store', store });
+};

@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-  stores, showStores, createStore, getStore,
+  stores, showStores, createStore, getStore, editStorePage
 } = require('../controllers/store');
 const asyncErrorHandler = require('../util/asyncErrorHandler');
 
@@ -13,5 +13,7 @@ router.get('/', isLoggedIn, asyncErrorHandler(stores))
 
 router.get('/new', isLoggedIn, showStores);
 
-router.get('/:id', isLoggedIn, isStoreAuthor, asyncErrorHandler(getStore));
+router.get('/edit/:id', isLoggedIn, asyncErrorHandler(isStoreAuthor), asyncErrorHandler(editStorePage))
+
+router.get('/:id', isLoggedIn, asyncErrorHandler(isStoreAuthor), asyncErrorHandler(getStore));
 module.exports = router;
