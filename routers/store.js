@@ -13,7 +13,7 @@ router.get('/', isLoggedIn, asyncErrorHandler(stores))
 
 router.get('/new', isLoggedIn, showStores);
 
-router.get('/edit/:id', isLoggedIn, asyncErrorHandler(isStoreAuthor), asyncErrorHandler(editStorePage))
+router.get('/edit/:id', isLoggedIn, asyncErrorHandler(isStoreAuthor), asyncErrorHandler(editStorePage));
 
 router.get('/:id', isLoggedIn, asyncErrorHandler(isStoreAuthor), asyncErrorHandler(getStore));
 module.exports = router;
