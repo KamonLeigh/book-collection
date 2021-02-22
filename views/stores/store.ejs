@@ -4,6 +4,9 @@
     <h2><%= store.name %></h2>
     <p><%= store.notes %></p>
     <a target="_self" href="/stores/edit/<%=store._id%>">edit store</a>
+    <form method="POST" action="/stores/delete/<%=store._id%>?_method=DELETE">
+        <button>delete store</button>
+    </form>
 </article>
 
 <script>

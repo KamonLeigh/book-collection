@@ -91,7 +91,12 @@ module.exports.deleteBook = async (req, res) => {
   const { id } = req.params;
 
   const book = await Book.findById(id);
-  await cloudinary.uploader.destroy(book.image.public_id);
+
+  if (book.image.public_id) {
+    await cloudinary.uploader.destroy(book.image.public_id);
+  }
+
+  await Book.findOneAndDelete({ _id: id });
 
   req.flash('msg-success', 'book has been successfully deleted');
   res.redirect('/books');

@@ -73,3 +73,11 @@ module.exports.editStore = async (req, res) => {
   req.flash('msg-success', 'You have successfully updated your book store');
   return res.redirect(`/stores/${id}`);
 };
+
+module.exports.deleteStore = async (req, res) => {
+  const { id } = req.params;
+
+  await Store.findOneAndDelete({ id });
+  req.flash('msg-success', 'Store has been successfully removed');
+  return res.redirect('/stores');
+};
