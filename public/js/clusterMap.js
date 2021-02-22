@@ -1,228 +1,129 @@
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
-  container: 'map',
-  zoom: 0.3,
-  center: [0, 20],
+  container: 'cluster-map',
   style: 'mapbox://styles/mapbox/light-v10',
+  center: [-103.59179687498357, 40.66995747013945],
+  zoom: 3,
 });
 
 map.addControl(new mapboxgl.NavigationControl());
 
-// filters for classifying earthquakes into five categories based on magnitude
-const mag1 = ['<', ['get', 'mag'], 2];
-const mag2 = ['all', ['>=', ['get', 'mag'], 2], ['<', ['get', 'mag'], 3]];
-const mag3 = ['all', ['>=', ['get', 'mag'], 3], ['<', ['get', 'mag'], 4]];
-const mag4 = ['all', ['>=', ['get', 'mag'], 4], ['<', ['get', 'mag'], 5]];
-const mag5 = ['>=', ['get', 'mag'], 5];
-
-// colors to use for the categories
-const colors = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
-
 map.on('load', () => {
-// add a clustered GeoJSON source for a sample set of earthquakes
-  map.addSource('earthquakes', {
+  // Add a new source from our GeoJSON data and
+  // set the 'cluster' option to true. GL-JS will
+  // add the point_count property to your source data.
+  map.addSource('stores', {
     type: 'geojson',
-    data:
-'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
+    // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
+    // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+    data: stores,
     cluster: true,
-    clusterRadius: 80,
-    clusterProperties: {
-      // keep separate counts for each magnitude category in a cluster
-      mag1: ['+', ['case', mag1, 1, 0]],
-      mag2: ['+', ['case', mag2, 1, 0]],
-      mag3: ['+', ['case', mag3, 1, 0]],
-      mag4: ['+', ['case', mag4, 1, 0]],
-      mag5: ['+', ['case', mag5, 1, 0]],
-    },
+    clusterMaxZoom: 14, // Max zoom to cluster points on
+    clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
   });
-  // circle and symbol layers for rendering individual earthquakes (unclustered points)
+
   map.addLayer({
-    id: 'earthquake_circle',
+    id: 'clusters',
     type: 'circle',
-    source: 'earthquakes',
-    filter: ['!=', 'cluster', true],
+    source: 'stores',
+    filter: ['has', 'point_count'],
     paint: {
+      // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
+      // with three steps to implement three types of circles:
+      //   * Blue, 20px circles when point count is less than 100
+      //   * Yellow, 30px circles when point count is between 100 and 750
+      //   * Pink, 40px circles when point count is greater than or equal to 750
       'circle-color': [
-        'case',
-        mag1,
-        colors[0],
-        mag2,
-        colors[1],
-        mag3,
-        colors[2],
-        mag4,
-        colors[3],
-        colors[4],
+        'step',
+        ['get', 'point_count'],
+        '#00BCD4',
+        10,
+        '#2196F3',
+        30,
+        '#3F51B5',
       ],
-      'circle-opacity': 0.6,
-      'circle-radius': 12,
+      'circle-radius': [
+        'step',
+        ['get', 'point_count'],
+        15,
+        10,
+        20,
+        30,
+        25,
+      ],
     },
   });
+
   map.addLayer({
-    id: 'earthquake_label',
+    id: 'cluster-count',
     type: 'symbol',
-    source: 'earthquakes',
-    filter: ['!=', 'cluster', true],
+    source: 'stores',
+    filter: ['has', 'point_count'],
     layout: {
-      'text-field': [
-        'number-format',
-        ['get', 'mag'],
-        { 'min-fraction-digits': 1, 'max-fraction-digits': 1 },
-      ],
-      'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-      'text-size': 10,
-    },
-    paint: {
-      'text-color': [
-        'case',
-        ['<', ['get', 'mag'], 3],
-        'black',
-        'white',
-      ],
+      'text-field': '{point_count_abbreviated}',
+      'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+      'text-size': 12,
     },
   });
 
-  // objects for caching and keeping track of HTML marker objects (for performance)
-  const markers = {};
-  let markersOnScreen = {};
+  map.addLayer({
+    id: 'unclustered-point',
+    type: 'circle',
+    source: 'stores',
+    filter: ['!', ['has', 'point_count']],
+    paint: {
+      'circle-color': '#11b4da',
+      'circle-radius': 4,
+      'circle-stroke-width': 1,
+      'circle-stroke-color': '#fff',
+    },
+  });
 
-  function updateMarkers() {
-    const newMarkers = {};
-    const features = map.querySourceFeatures('earthquakes');
+  // inspect a cluster on click
+  map.on('click', 'clusters', (e) => {
+    const features = map.queryRenderedFeatures(e.point, {
+      layers: ['clusters'],
+    });
+    const clusterId = features[0].properties.cluster_id;
+    map.getSource('stores').getClusterExpansionZoom(
+      clusterId,
+      (err, zoom) => {
+        if (err) return;
 
-    // for every cluster on the screen, create an HTML marker for it (if we didn't yet),
-    // and add it to the map if it's not there already
-    for (let i = 0; i < features.length; i++) {
-      const coords = features[i].geometry.coordinates;
-      const props = features[i].properties;
-      if (!props.cluster) continue;
-      var id = props.cluster_id;
+        map.easeTo({
+          center: features[0].geometry.coordinates,
+          zoom,
+        });
+      },
+    );
+  });
 
-      let marker = markers[id];
-      if (!marker) {
-        const el = createDonutChart(props);
-        marker = markers[id] = new mapboxgl.Marker({
-          element: el,
-        }).setLngLat(coords);
-      }
-      newMarkers[id] = marker;
+  // When a click event occurs on a feature in
+  // the unclustered-point layer, open a popup at
+  // the location of the feature, with
+  // description HTML from its properties.
+  map.on('click', 'unclustered-point', (e) => {
+    const { popUpMarkup } = e.features[0].properties;
+    console.log(popUpMarkup)
+    const coordinates = e.features[0].geometry.coordinates.slice();
 
-      if (!markersOnScreen[id]) marker.addTo(map);
+    // Ensure that if the map is zoomed out such that
+    // multiple copies of the feature are visible, the
+    // popup appears over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
-    // for every marker we've added previously, remove those that are no longer visible
-    for (id in markersOnScreen) {
-      if (!newMarkers[id]) markersOnScreen[id].remove();
-    }
-    markersOnScreen = newMarkers;
-  }
 
-  // after the GeoJSON data is loaded, update markers on the screen and do so on every map move/moveend
-  map.on('data', (e) => {
-    if (e.sourceId !== 'earthquakes' || !e.isSourceLoaded) return;
+    new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(popUpMarkup)
+      .addTo(map);
+  });
 
-    map.on('move', updateMarkers);
-    map.on('moveend', updateMarkers);
-    updateMarkers();
+  map.on('mouseenter', 'clusters', () => {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+  map.on('mouseleave', 'clusters', () => {
+    map.getCanvas().style.cursor = '';
   });
 });
-
-// code for creating an SVG donut chart from feature properties
-function createDonutChart(props) {
-  const offsets = [];
-  const counts = [
-    props.mag1,
-    props.mag2,
-    props.mag3,
-    props.mag4,
-    props.mag5,
-  ];
-  let total = 0;
-  for (var i = 0; i < counts.length; i++) {
-    offsets.push(total);
-    total += counts[i];
-  }
-  const fontSize = total >= 1000 ? 22 : total >= 100 ? 20 : total >= 10 ? 18 : 16;
-  const r = total >= 1000 ? 50 : total >= 100 ? 32 : total >= 10 ? 24 : 18;
-  const r0 = Math.round(r * 0.6);
-  const w = r * 2;
-
-  let html = `<div><svg width="${
-    w
-  }" height="${
-    w
-  }" viewbox="0 0 ${
-    w
-  } ${
-    w
-  }" text-anchor="middle" style="font: ${
-    fontSize
-  }px sans-serif; display: block">`;
-
-  for (i = 0; i < counts.length; i++) {
-    html += donutSegment(
-      offsets[i] / total,
-      (offsets[i] + counts[i]) / total,
-      r,
-      r0,
-      colors[i],
-    );
-  }
-  html
-+= `<circle cx="${
-      r
-    }" cy="${
-      r
-    }" r="${
-      r0
-    }" fill="white" /><text dominant-baseline="central" transform="translate(${
-      r
-    }, ${
-      r
-    })">${
-      total.toLocaleString()
-    }</text></svg></div>`;
-
-  const el = document.createElement('div');
-  el.innerHTML = html;
-  return el.firstChild;
-}
-
-function donutSegment(start, end, r, r0, color) {
-  if (end - start === 1) end -= 0.00001;
-  const a0 = 2 * Math.PI * (start - 0.25);
-  const a1 = 2 * Math.PI * (end - 0.25);
-  const x0 = Math.cos(a0);
-  const y0 = Math.sin(a0);
-  const x1 = Math.cos(a1);
-  const y1 = Math.sin(a1);
-  const largeArc = end - start > 0.5 ? 1 : 0;
-
-  return [
-    '<path d="M',
-    r + r0 * x0,
-    r + r0 * y0,
-    'L',
-    r + r * x0,
-    r + r * y0,
-    'A',
-    r,
-    r,
-    0,
-    largeArc,
-    1,
-    r + r * x1,
-    r + r * y1,
-    'L',
-    r + r0 * x1,
-    r + r0 * y1,
-    'A',
-    r0,
-    r0,
-    0,
-    largeArc,
-    0,
-    r + r0 * x0,
-    r + r0 * y0,
-    `" fill="${color}" />`,
-  ].join(' ');
-}

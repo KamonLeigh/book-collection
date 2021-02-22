@@ -2,7 +2,7 @@
 
 <a target="_self" href="/stores/new">add new store</a>
 
-<div id="map"></div>
+<div id="cluster-map"></div>
 
 
 <% if(stores.length) { %>
@@ -22,5 +22,7 @@
 
 <script>
     const mapToken = '<%-process.env.MAP_TOKEN%>';
+    const stores = { features: <%- JSON.stringify(stores) %>}
+    console.log(stores);
 </script>
 <script src="/js/clusterMap.js"></script>
