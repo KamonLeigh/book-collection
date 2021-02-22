@@ -1,19 +1,20 @@
 const express = require('express');
 const {
-  stores, showStores, createStore, getStore, editStorePage
+  stores, showStores, createStore, getStore, editStorePage, editStore,
 } = require('../controllers/store');
 const asyncErrorHandler = require('../util/asyncErrorHandler');
 
-const { isLoggedIn, isStoreAuthor } = require('../middleware');
+const { isLoggedIn, isStoreAuthor, validateStore } = require('../middleware');
 
 const router = new express.Router();
 
 router.get('/', isLoggedIn, asyncErrorHandler(stores))
-  .post('/', isLoggedIn, asyncErrorHandler(createStore));
+  .post('/', isLoggedIn, validateStore, asyncErrorHandler(createStore));
 
 router.get('/new', isLoggedIn, showStores);
 
 router.get('/edit/:id', isLoggedIn, asyncErrorHandler(isStoreAuthor), asyncErrorHandler(editStorePage));
 
-router.get('/:id', isLoggedIn, asyncErrorHandler(isStoreAuthor), asyncErrorHandler(getStore));
+router.get('/:id', isLoggedIn, asyncErrorHandler(isStoreAuthor), asyncErrorHandler(getStore))
+  .put('/:id', isLoggedIn, asyncErrorHandler(isStoreAuthor), validateStore, asyncErrorHandler(editStore));
 module.exports = router;
