@@ -29,6 +29,14 @@
 }
 
 
+:root {
+    --offwhite: #f6f6f6;
+    --white: #fff;
+    --black: #000;
+    --btn-radius: 28px;
+
+}
+
 html {
     box-sizing: border-box;;
 }
@@ -43,9 +51,12 @@ html {
 body {
     margin: 0;
     padding: 0;
-    /* line-height: 1.2;
-    letter-spacing: 1.1px; */
+    text-rendering: optimizeLegibility;
+    line-height: 1.15;
+    letter-spacing: 1.1px;
     font-family: Lato, Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    background: var(--offwhite);
 }
 
 
