@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+const crypto = require('crypto');
 const User = require('../db/models/user');
 const { sendWelcomeMessage } = require('../email/account');
 
@@ -54,4 +55,23 @@ module.exports.user = async (req, res) => {
 
 module.exports.forgotPw = (req, res) => {
   res.render('users/forgotPassword', { title: 'forgot password' });
+};
+
+module.exports.postForgotPw = async (req, res) => {
+  const token = await crypto.randomBytes(20).toString('hex');
+  const { email } = req.body;
+
+  const user = User.findOne({ email });
+
+  user.resetPasswordToken = token;
+  user.resetPasswordExpires = Date.now() + 3600000;
+
+  await user.save();
+  if (!user) {
+    req.flash('error', 'No account with that email could be found');
+    return res.redirect('/forgot');
+  }
+
+  req.flash('msg-success', `An email has been sent to ${email} with further instructions.`);
+  return res.redirect('/forgot');
 };
