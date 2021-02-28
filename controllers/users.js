@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const crypto = require('crypto');
 const User = require('../db/models/user');
-const { sendWelcomeMessage } = require('../email/account');
+const { sendWelcomeMessage, resetEmail } = require('../email/account');
 
 module.exports.register = ((req, res, next) => {
   res.render('users/register', { title: 'Register' });
@@ -67,6 +67,8 @@ module.exports.postForgotPw = async (req, res) => {
   user.resetPasswordExpires = Date.now() + 3600000;
 
   await user.save();
+
+  await resetEmail(email, token, req.headers.host);
   if (!user) {
     req.flash('error', 'No account with that email could be found');
     return res.redirect('/forgot');
