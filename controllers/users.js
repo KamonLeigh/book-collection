@@ -51,3 +51,7 @@ module.exports.user = async (req, res) => {
   const user = await User.findById(userId).exec();
   res.render('users/me', { title: 'profile', user });
 };
+
+module.exports.forgotPw = (req, res) => {
+  res.render('users/forgotPassword', { title: 'forgot password' });
+};

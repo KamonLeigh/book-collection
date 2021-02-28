@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const asyncErrorHandler = require('../util/asyncErrorHandler');
 const {
-  register, registerUser, login, loginUser, logoutUser, user: getUser,
+  register, registerUser, login, loginUser, logoutUser, user: getUser, forgotPw 
 } = require('../controllers/users');
 const { isLoggedIn, validateUser } = require('../middleware');
 
@@ -13,6 +13,7 @@ router.get('/register', register)
   .get('/login', login)
   .post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), loginUser)
   .get('/logout', logoutUser)
-  .get('/me', isLoggedIn, asyncErrorHandler(getUser));
+  .get('/me', isLoggedIn, asyncErrorHandler(getUser))
+  .get('/forgot', forgotPw);
 
 module.exports = router;
