@@ -61,7 +61,12 @@ module.exports.postForgotPw = async (req, res) => {
   const token = await crypto.randomBytes(20).toString('hex');
   const { email } = req.body;
 
-  const user = User.findOne({ email });
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    req.flash('error', 'No account with that email could be found');
+    return res.redirect('/forgot');
+  }
 
   user.resetPasswordToken = token;
   user.resetPasswordExpires = Date.now() + 3600000;
@@ -69,10 +74,6 @@ module.exports.postForgotPw = async (req, res) => {
   await user.save();
 
   await resetEmail(email, token, req.headers.host);
-  if (!user) {
-    req.flash('error', 'No account with that email could be found');
-    return res.redirect('/forgot');
-  }
 
   req.flash('msg-success', `An email has been sent to ${email} with further instructions.`);
   return res.redirect('/forgot');
