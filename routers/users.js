@@ -2,7 +2,8 @@ const express = require('express');
 const passport = require('passport');
 const asyncErrorHandler = require('../util/asyncErrorHandler');
 const {
-  register, registerUser, login, loginUser, logoutUser, user: getUser, forgotPw, postForgotPw,
+  register, registerUser, login, loginUser, logoutUser, user: getUser, forgotPw, postForgotPw, 
+  getPasswordReset,
 } = require('../controllers/users');
 const { isLoggedIn, validateUser } = require('../middleware');
 
@@ -15,6 +16,7 @@ router.get('/register', register)
   .get('/logout', logoutUser)
   .get('/me', isLoggedIn, asyncErrorHandler(getUser))
   .get('/forgot', forgotPw)
-  .post('/forgot', asyncErrorHandler(postForgotPw));
+  .post('/forgot', asyncErrorHandler(postForgotPw))
+  .get('/reset/:token', asyncErrorHandler(getPasswordReset));
 
 module.exports = router;

@@ -38,3 +38,16 @@ module.exports.resetEmail = async (email, token, host) => {
   };
   await sgMail.send(msg);
 };
+
+module.exports.resetEmailConfirmation = async (email) => {
+  const msg = {
+    to: email,
+    from: 'byronleigh80@gmail.com',
+    subject: 'Book Collection: Password reset done',
+    html: `<h1>password changed </h1>
+          <p>This email is to confirm that the password for your account has just been changed.
+          If you did not make this change, please hit reply and notify us at once.</p>
+    `,
+  };
+  await sgMail(msg);
+};

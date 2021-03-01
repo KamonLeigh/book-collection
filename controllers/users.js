@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 const crypto = require('crypto');
+const util = require('util');
 const User = require('../db/models/user');
-const { sendWelcomeMessage, resetEmail } = require('../email/account');
+const { sendWelcomeMessage, resetEmail, resetEmailConfirmation } = require('../email/account');
 
 module.exports.register = ((req, res, next) => {
   res.render('users/register', { title: 'Register' });
@@ -77,4 +78,50 @@ module.exports.postForgotPw = async (req, res) => {
 
   req.flash('msg-success', `An email has been sent to ${email} with further instructions.`);
   return res.redirect('/forgot');
+};
+
+module.exports.getPasswordReset = async (req, res) => {
+  const { token } = req.params;
+
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    req.flash('msg-success', 'Password reset token is invalid or has expired.');
+    return res.redirect('/forgot');
+  }
+  return res.render('users/resetPassword', { title: 'reset password', token });
+};
+
+module.exports.putPasswordReset = async (req, res) => {
+  const { token } = req.params;
+
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    req.flash('error', 'Password reset token is invalid or has expired.');
+    return res.redirect('/forgot');
+  }
+
+  if (req.body.password === req.body.confirm) {
+    user.setPassword(req.body.password);
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+
+    await user.save();
+
+    const login = util.promisify(req.login.bind(req));
+
+    await login(user);
+  } else {
+    req.flash('error', 'Password and passsword confirm do not match.');
+    return res.redirect('/forgot');
+  }
+  await resetEmailConfirmation(user.email);
+  return res.redirect('/books');
 };
