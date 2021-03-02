@@ -49,5 +49,5 @@ module.exports.resetEmailConfirmation = async (email) => {
           If you did not make this change, please hit reply and notify us at once.</p>
     `,
   };
-  await sgMail(msg);
+  await sgMail.send(msg);
 };

@@ -109,7 +109,7 @@ module.exports.putPasswordReset = async (req, res) => {
   }
 
   if (req.body.password === req.body.confirm) {
-    user.setPassword(req.body.password);
+    await user.setPassword(req.body.password);
     user.resetPasswordToken = null;
     user.resetPasswordExpires = null;
 
@@ -123,5 +123,7 @@ module.exports.putPasswordReset = async (req, res) => {
     return res.redirect('/forgot');
   }
   await resetEmailConfirmation(user.email);
+  req.flash('msg-success', 'Password has been reset.');
+
   return res.redirect('/books');
 };

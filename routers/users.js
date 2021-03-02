@@ -4,6 +4,7 @@ const asyncErrorHandler = require('../util/asyncErrorHandler');
 const {
   register, registerUser, login, loginUser, logoutUser, user: getUser, forgotPw, postForgotPw, 
   getPasswordReset,
+  putPasswordReset,
 } = require('../controllers/users');
 const { isLoggedIn, validateUser } = require('../middleware');
 
@@ -17,6 +18,7 @@ router.get('/register', register)
   .get('/me', isLoggedIn, asyncErrorHandler(getUser))
   .get('/forgot', forgotPw)
   .post('/forgot', asyncErrorHandler(postForgotPw))
-  .get('/reset/:token', asyncErrorHandler(getPasswordReset));
+  .get('/reset/:token', asyncErrorHandler(getPasswordReset))
+  .put('/password/:token', asyncErrorHandler(putPasswordReset));
 
 module.exports = router;
