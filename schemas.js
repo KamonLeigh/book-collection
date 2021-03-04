@@ -1,10 +1,10 @@
 const BaseJoi = require('joi');
 const sanitizeHtml = require('sanitize-html');
 
-const extention = (joi) => ({
+const extension = (joi) => ({
   type: 'string',
-  base: joi.string,
-  message: {
+  base: joi.string(),
+  messages: {
     'string.escapeHTML': '{{#label}} must not include HTML',
   },
   rules: {
@@ -21,7 +21,7 @@ const extention = (joi) => ({
   },
 });
 
-const Joi = BaseJoi.extend(extention);
+const Joi = BaseJoi.extend(extension);
 
 module.exports.bookSchema = Joi.object({
   book: Joi.object({
