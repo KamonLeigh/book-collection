@@ -1,31 +1,61 @@
-const Joi = require('joi');
+const BaseJoi = require('joi');
+const sanitizeHtml = require('sanitize-html');
+
+const extention = (joi) => ({
+  type: 'string',
+  base: joi.string,
+  message: {
+    'string.escapeHTML': '{{#label}} must not include HTML',
+  },
+  rules: {
+    escapeHTML: {
+      validate(value, helpers) {
+        const clean = sanitizeHtml(value, {
+          allowedTags: [],
+          allowedAttributes: {},
+        });
+        if (clean !== value) return helpers.errors('string.escapeHTML', { value });
+        return clean;
+      },
+    },
+  },
+});
+
+const Joi = BaseJoi.extend(extention);
 
 module.exports.bookSchema = Joi.object({
   book: Joi.object({
-    title: Joi.string().required(),
+    title: Joi.string().required().escapeHTML(),
     completed: Joi.boolean(),
-    description: Joi.string().min(0).max(250).required(),
+    description: Joi.string().min(0).max(250).required()
+      .escapeHTML(),
     private: Joi.boolean(),
     category: Joi.string().required(),
-    author: Joi.string().required(),
+    author: Joi.string().required().escapeHTML(),
     image: Joi.string(),
   }).required(),
   image: Joi.string(),
 });
 
 module.exports.userSchema = Joi.object({
-  firstName: Joi.string().min(2).max(255).required(),
-  lastName: Joi.string().min(2).max(255).required(),
+  firstName: Joi.string().min(2).max(255).required()
+    .escapeHTML(),
+  lastName: Joi.string().min(2).max(255).required()
+    .escapeHTML(),
   email: Joi.string().min(5).max(255).email()
-    .required(),
-  password: Joi.string().min(4).max(255).required(),
-  username: Joi.string().min(2).max(255).required(),
+    .required()
+    .escapeHTML(),
+  password: Joi.string().min(4).max(255).required()
+    .escapeHTML(),
+  username: Joi.string().min(2).max(255).required()
+    .escapeHTML(),
 });
 
 module.exports.storeSchema = Joi.object({
   store: Joi.object({
-    name: Joi.string().min(2).max(255).required(),
-    location: Joi.string().min(5).max(100),
-    notes: Joi.string().min(2).max(255),
+    name: Joi.string().min(2).max(255).required()
+      .escapeHTML(),
+    location: Joi.string().min(5).max(100).escapeHTML(),
+    notes: Joi.string().min(2).max(255).escapeHTML(),
   }).required(),
 });
