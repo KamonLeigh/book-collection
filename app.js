@@ -38,9 +38,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// prevents client sending script to run in db
+// prevents client sending script to run in dbt pusht
 app.use(expressMongoSanitize());
 app.use(express.json());
+
 
 // app.set('trust proxy', 1);
 
