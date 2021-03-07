@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 
-const opts = { toJSON: { virtuals: true }};
+const opts = { toJSON: { virtuals: true }, timestamps: true };
 const storeSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -30,7 +30,6 @@ const storeSchema = new mongoose.Schema({
   location: {
     type: String,
   },
-
 }, opts);
 
 const Store = mongoose.model('Store', storeSchema);

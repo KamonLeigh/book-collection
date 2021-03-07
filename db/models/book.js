@@ -42,7 +42,7 @@ const bookSchema = new mongoose.Schema({
     default: false,
     required: false,
   },
-});
+}, { timestamps: true });
 
 const Book = mongoose.model('Book', bookSchema);
 
