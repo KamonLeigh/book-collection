@@ -30,6 +30,10 @@ const storeSchema = new mongoose.Schema({
   location: {
     type: String,
   },
+  favourite: {
+    type: Boolean,
+    required: false,
+  },
 }, opts);
 
 const Store = mongoose.model('Store', storeSchema);
