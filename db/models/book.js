@@ -37,6 +37,11 @@ const bookSchema = new mongoose.Schema({
     url: String,
     public_id: String,
   },
+  favourite: {
+    type: Boolean,
+    default: false,
+    required: false,
+  },
 });
 
 const Book = mongoose.model('Book', bookSchema);

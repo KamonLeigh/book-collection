@@ -33,6 +33,7 @@ module.exports.bookSchema = Joi.object({
     category: Joi.string().required(),
     author: Joi.string().required().escapeHTML(),
     image: Joi.string(),
+    favourite: Joi.boolean(),
   }).required(),
   image: Joi.string(),
 });
