@@ -2,6 +2,7 @@
 
 <h1><%= book.title%></h1>
 <p><%= book.owner.username %></p>
+<img src="<%=book.image.url%>">
 
 <a target="_self" href="/books/edit/<%=book._id%>">edit book</a>
 

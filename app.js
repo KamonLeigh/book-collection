@@ -42,7 +42,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressMongoSanitize());
 app.use(express.json());
 
-
 // app.set('trust proxy', 1);
 
 app.use(session({
@@ -54,7 +53,47 @@ app.use(session({
   },
 }));
 
-// app.use(helmet());
+app.use(helmet());
+
+const scriptSrcUrls = [
+  'https://api.tiles.mapbox.com',
+  'https://api.mapbox.com',
+  'https://cdnjs.cloudflare.com',
+  'https://cdn.jsdelivr.net',
+];
+const styleSrcUrls = [
+  'https://api.mapbox.com',
+  'https://api.tiles.mapbox.com',
+];
+const connectSrcUrls = [
+  'https://api.mapbox.com',
+  'https://*.tiles.mapbox.com',
+  'https://events.mapbox.com',
+];
+const fontSrcUrls = [];
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: [],
+      connectSrc: ["'self'", ...connectSrcUrls],
+      scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      workerSrc: ["'self'", 'blob:'],
+      childSrc: ['blob:'],
+      objectSrc: [],
+      imgSrc: [
+        "'self'",
+        'blob:',
+        'data:',
+        'https://res.cloudinary.com/dyzzjvtmd/', // SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+        'https://images.unsplash.com',
+      ],
+      fontSrc: ["'self'", ...fontSrcUrls],
+    },
+  }),
+);
+
 app.use(flash());
 
 const User = require('./db/models/user');
