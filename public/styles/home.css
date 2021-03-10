@@ -34,6 +34,8 @@
     --white: #fff;
     --black: #000;
     --btn-radius: 28px;
+    --model-radius: 16px;
+
 
 }
 
@@ -66,7 +68,25 @@ body {
 .home {
     display: flex;
     justify-content: center;
-    align-self: center;
+    align-items: center;
+    height: 90%;
+}
+
+.home div {
+    width: 30%;
+    min-width: 250px;
+    background: var(--offwhite);
+    padding: 40px;
+    border-radius: var(--model-radius);
+}
+
+.home h1 {
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.home p {
+    text-align: center;
 }
 
 
