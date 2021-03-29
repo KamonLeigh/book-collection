@@ -35,6 +35,10 @@
     --black: #000;
     --btn-radius: 28px;
     --not-quite-black: #23272a;
+    --font-family: Lato, Arial, Helvetica, sans-serif;
+
+    --font-weight-normal: 400;
+    --font-weight-bold: 700;
 
 }
 
@@ -55,9 +59,16 @@ body {
     text-rendering: optimizeLegibility;
     line-height: 1.15;
     letter-spacing: 1.1px;
-    font-family: Lato, Arial, Helvetica, sans-serif;
-    font-weight: 400;
     background: var(--offwhite);
+}
+
+body, input, button, select, option {
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-normal);
+}
+
+h1, h2, h3, h4, h5, h6, strong {
+    font-weight: var(--font-weight-bold);
 }
 
 
