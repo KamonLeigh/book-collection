@@ -7,10 +7,11 @@
     <label for="lastName">last name</label>
     <input id="lastName" name="lastName" type="text" autocomplete="last-name" required>
     <label for="email">email</label>
-    <input id="email" name="email" type="text" autocomplete="email" required>
+    <input id="email"  name="email" type="text" autocomplete="email" required>
     <label for="username">username</label>
     <input id="username" name="username" type="text" required>
     <label for="password">password</label>
-    <input id="password" name="password" type="password" required>
+    <input id="password" minlength="8" maxlength="255" name="password" type="password" aria-describedby="password-length" required>
+    <div id="password-length">Please use at least eight characters.</div>
     <button type="submit">register</button>
 </form>
